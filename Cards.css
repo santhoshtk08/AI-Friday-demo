@@ -1,0 +1,137 @@
+.card {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-6);
+    transition: all var(--transition-base);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.card-title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+}
+
+.card-subtitle {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+.card-body {
+    margin-bottom: var(--space-4);
+}
+
+.card-footer {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-light);
+}
+
+/* ============================================
+   Stat Cards
+   ============================================ */
+.stat-card {
+    background: linear-gradient(135deg, var(--bg-primary), var(--bg-tertiary));
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+    border: 1px solid var(--border-light);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.stat-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-4);
+}
+
+.stat-card-icon.primary {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    color: var(--text-inverse);
+}
+
+.stat-card-icon.success {
+    background: linear-gradient(135deg, var(--success-500), var(--success-600));
+    color: var(--text-inverse);
+}
+
+.stat-card-icon.warning {
+    background: linear-gradient(135deg, var(--warning-500), var(--warning-600));
+    color: var(--text-inverse);
+}
+
+.stat-card-icon.info {
+    background: linear-gradient(135deg, var(--info-500), var(--info-600));
+    color: var(--text-inverse);
+}
+
+.stat-card-label {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    font-weight: var(--font-medium);
+    margin-bottom: var(--space-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-card-value {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-1);
+}
+
+.stat-card-change {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+}
+
+/* ============================================
+   Glassmorphism Card
+   ============================================ */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    padding: var(--space-6);
+}
+
+/* ============================================
+   Card Grid
+   ============================================ */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+}
+
+@media (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
