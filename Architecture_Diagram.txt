@@ -1,0 +1,221 @@
+# System Architecture Diagram
+## Fixed Deposit Management System
+
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                          PRESENTATION LAYER                                ║
+║                         (React Single Page Application)                    ║
+╠═══════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ ║
+║  │ Login Page   │  │  Dashboard   │  │  Create FD   │  │ FD Register  │ ║
+║  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘ ║
+║                                                                            ║
+║  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐                   ║
+║  │  FD Details  │  │ System Config│  │User Mgmt     │  (Supervisor)     ║
+║  └──────────────┘  └──────────────┘  └──────────────┘                   ║
+║                                                                            ║
+║  Components: AuthContext, ProtectedRoute, API Service Layer              ║
+║  Styling: CSS Variables, Design System, Responsive Layout                ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+                                    │
+                                    │ HTTP/JSON
+                                    │ REST API
+                                    │ CORS Enabled
+                                    │ X-Session-Token Header
+                                    ▼
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                          APPLICATION LAYER                                 ║
+║                         (FastAPI REST API Server)                          ║
+╠═══════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐ ║
+║  │                        API ENDPOINTS                                 │ ║
+║  │                                                                      │ ║
+║  │  Authentication:        FD Management:         Admin:               │ ║
+║  │  • POST /auth/login     • POST /fd             • GET /config        │ ║
+║  │  • POST /auth/logout    • GET /fd              • PUT /config        │ ║
+║  │  • GET /auth/me         • GET /fd/{fd_no}      • GET /users         │ ║
+║  │                         • POST /fd/.../close   • POST /users        │ ║
+║  │                         • POST /fd/.../mature                        │ ║
+║  │                         • GET /fd/.../receipt                        │ ║
+║  └─────────────────────────────────────────────────────────────────────┘ ║
+║                                    │                                       ║
+║                                    ▼                                       ║
+║  ┌─────────────────────────────────────────────────────────────────────┐ ║
+║  │                     BUSINESS LOGIC LAYER                             │ ║
+║  │                                                                      │ ║
+║  │  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐ │ ║
+║  │  │ Authentication   │  │  FD Management   │  │ User Management  │ │ ║
+║  │  │    Service       │  │     Service      │  │     Service      │ │ ║
+║  │  │                  │  │                  │  │                  │ │ ║
+║  │  │ • Login/Logout   │  │ • Create FD      │  │ • List Users     │ │ ║
+║  │  │ • Session Mgmt   │  │ • List/Get FD    │  │ • Create User    │ │ ║
+║  │  │ • Role Check     │  │ • Close FD       │  │ • Role Assign    │ │ ║
+║  │  └──────────────────┘  └──────────────────┘  └──────────────────┘ │ ║
+║  │                                                                      │ ║
+║  │  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐ │ ║
+║  │  │   Interest       │  │    Receipt       │  │   Validation     │ │ ║
+║  │  │  Calculator      │  │   Generator      │  │    Service       │ │ ║
+║  │  │                  │  │                  │  │                  │ │ ║
+║  │  │ • Simple Int.    │  │ • PDF Creation   │  │ • Input Valid.   │ │ ║
+║  │  │ • Compound Int.  │  │ • Template       │  │ • Business Rules │ │ ║
+║  │  │ • Maturity Calc  │  │ • File Storage   │  │ • Data Sanitize  │ │ ║
+║  │  └──────────────────┘  └──────────────────┘  └──────────────────┘ │ ║
+║  └─────────────────────────────────────────────────────────────────────┘ ║
+║                                                                            ║
+║  Middleware: CORS, Error Handling, Request Logging                        ║
+║  Models: Pydantic Data Validation                                         ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+                                    │
+                                    │ SQL Queries
+                                    │ Parameterized
+                                    │ Transaction Support
+                                    ▼
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                             DATA LAYER                                     ║
+╠═══════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐ ║
+║  │                      SQLite Database                                 │ ║
+║  │                     (fd_system.db)                                   │ ║
+║  │                                                                      │ ║
+║  │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐       │ ║
+║  │  │     users      │  │  fd_accounts   │  │    sessions    │       │ ║
+║  │  │                │  │                │  │                │       │ ║
+║  │  │ • id           │  │ • id           │  │ • id           │       │ ║
+║  │  │ • username     │  │ • fd_no        │  │ • session_token│       │ ║
+║  │  │ • password_hash│  │ • customer_name│  │ • user_id      │       │ ║
+║  │  │ • role         │  │ • deposit_amt  │  │ • created_at   │       │ ║
+║  │  │ • created_at   │  │ • interest_rate│  │                │       │ ║
+║  │  │                │  │ • tenure       │  │                │       │ ║
+║  │  │                │  │ • dates        │  │                │       │ ║
+║  │  │                │  │ • status       │  │                │       │ ║
+║  │  └────────────────┘  └────────────────┘  └────────────────┘       │ ║
+║  │                                                                      │ ║
+║  │  ┌────────────────┐                                                 │ ║
+║  │  │ system_config  │                                                 │ ║
+║  │  │                │                                                 │ ║
+║  │  │ • id           │                                                 │ ║
+║  │  │ • interest_type│                                                 │ ║
+║  │  │ • penalty_%    │                                                 │ ║
+║  │  │ • default_rates│                                                 │ ║
+║  │  └────────────────┘                                                 │ ║
+║  └─────────────────────────────────────────────────────────────────────┘ ║
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐ ║
+║  │                       FILE STORAGE                                   │ ║
+║  │                      (receipts/)                                     │ ║
+║  │                                                                      │ ║
+║  │  • FD_YYYYMMDDHHMMSS_receipt.pdf                                    │ ║
+║  │  • Generated on-demand via ReportLab                                │ ║
+║  │  • Served as file downloads                                         │ ║
+║  └─────────────────────────────────────────────────────────────────────┘ ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════════════
+                            DATA FLOW EXAMPLES
+═══════════════════════════════════════════════════════════════════════════
+
+1. USER LOGIN FLOW:
+   ┌──────┐     POST /auth/login      ┌─────────┐     Validate      ┌──────┐
+   │Client│ ────────────────────────> │FastAPI  │ ─────────────────> │ DB   │
+   │      │ <──────────────────────── │         │ <───────────────── │      │
+   └──────┘   Session Token + User    └─────────┘   User Record     └──────┘
+
+2. CREATE FD FLOW:
+   ┌──────┐     POST /fd + Data       ┌─────────┐    Calculate      ┌──────┐
+   │Client│ ────────────────────────> │FastAPI  │ ─────────────────> │Calc  │
+   │      │                            │         │ <───────────────── │Logic │
+   │      │                            │         │   Maturity Amount  └──────┘
+   │      │                            │         │
+   │      │                            │         │     Insert FD      ┌──────┐
+   │      │                            │         │ ─────────────────> │ DB   │
+   │      │ <──────────────────────── │         │ <───────────────── │      │
+   └──────┘   FD Created Response     └─────────┘   FD Record        └──────┘
+
+3. DOWNLOAD RECEIPT FLOW:
+   ┌──────┐  GET /fd/{id}/receipt     ┌─────────┐   Get FD Data     ┌──────┐
+   │Client│ ────────────────────────> │FastAPI  │ ─────────────────> │ DB   │
+   │      │                            │         │ <───────────────── │      │
+   │      │                            │         │   FD Record        └──────┘
+   │      │                            │         │
+   │      │                            │         │   Generate PDF     ┌──────┐
+   │      │                            │         │ ─────────────────> │Report│
+   │      │                            │         │ <───────────────── │Lab   │
+   │      │ <──────────────────────── │         │   PDF File         └──────┘
+   └──────┘   PDF Download            └─────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+                         DEPLOYMENT ARCHITECTURE
+═══════════════════════════════════════════════════════════════════════════
+
+DEVELOPMENT:
+┌─────────────────┐                    ┌─────────────────┐
+│   localhost     │                    │   localhost     │
+│   :5173         │ ────────────────> │   :8000         │
+│                 │   HTTP/JSON        │                 │
+│  Vite Dev       │   CORS Enabled     │  Uvicorn        │
+│  Server         │                    │  FastAPI        │
+│  (React App)    │                    │  (Python)       │
+└─────────────────┘                    └─────────────────┘
+                                              │
+                                              ▼
+                                       ┌─────────────────┐
+                                       │  fd_system.db   │
+                                       │  receipts/      │
+                                       └─────────────────┘
+
+PRODUCTION (Recommended):
+                    ┌─────────────────┐
+                    │  Load Balancer  │
+                    │   / CDN         │
+                    └────────┬────────┘
+                             │
+              ┌──────────────┴──────────────┐
+              │                             │
+              ▼                             ▼
+    ┌─────────────────┐          ┌─────────────────┐
+    │     Nginx       │          │     Nginx       │
+    │  (Static Files) │          │  (API Proxy)    │
+    └─────────────────┘          └────────┬────────┘
+              │                           │
+              │                           ▼
+              │                  ┌─────────────────┐
+              │                  │   Gunicorn      │
+              │                  │   + Uvicorn     │
+              │                  │   Workers       │
+              │                  └────────┬────────┘
+              │                           │
+              │                           ▼
+              │                  ┌─────────────────┐
+              │                  │   PostgreSQL    │
+              │                  │   (Production)  │
+              │                  └─────────────────┘
+              │                           │
+              └───────────────────────────┴─────────
+                                          │
+                                          ▼
+                                 ┌─────────────────┐
+                                 │  File Storage   │
+                                 │  (PDF Receipts) │
+                                 └─────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+```
+
+**Legend:**
+- `═══` : Layer boundaries
+- `───` : Data flow / Communication
+- `│ ▼` : Directional flow
+- `┌─┐` : Components / Services
+- `[ ]` : External systems
+
+**Key Technologies:**
+- **Frontend**: React 18, Vite, React Router, Vanilla CSS
+- **Backend**: Python FastAPI, Uvicorn, Pydantic
+- **Database**: SQLite (Dev), PostgreSQL (Prod recommended)
+- **PDF**: ReportLab
+- **Auth**: Session-based with custom headers
+

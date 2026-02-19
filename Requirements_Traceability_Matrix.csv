@@ -1,0 +1,77 @@
+Requirement ID,Requirement Category,Requirement Description,Priority,Design Reference,Implementation File(s),Test Case ID,Status,Notes
+FR-AUTH-001,Authentication,User Login with username and password,High,Architecture Doc Section 4.1,backend/auth.py | frontend/src/pages/LoginPage.jsx,TC-AUTH-001,Implemented,Session-based authentication
+FR-AUTH-002,Authentication,Role-Based Access Control (Officer/Supervisor),High,Architecture Doc Section 4.1,backend/auth.py | frontend/src/components/ProtectedRoute.jsx,TC-AUTH-002,Implemented,RBAC enforced at API and UI level
+FR-AUTH-003,Authentication,User Logout,Medium,Architecture Doc Section 4.1,backend/auth.py | frontend/src/context/AuthContext.jsx,TC-AUTH-003,Implemented,Session invalidation on logout
+FR-FD-001,FD Management,Create FD Account with KYC details,High,Architecture Doc Section 4.2,backend/main.py | frontend/src/pages/CreateFD.jsx,TC-FD-001,Implemented,Unique FD number generation
+FR-FD-002,FD Management,View FD Register (list all FDs),High,Architecture Doc Section 4.2,backend/main.py | frontend/src/pages/FDRegister.jsx,TC-FD-002,Implemented,Filtering and sorting supported
+FR-FD-003,FD Management,View FD Details,High,Architecture Doc Section 4.2,backend/main.py | frontend/src/pages/FDDetails.jsx,TC-FD-003,Implemented,Complete FD information display
+FR-FD-004,FD Management,Download FD Receipt (PDF),Medium,Architecture Doc Section 4.2,backend/receipt.py | backend/main.py,TC-FD-004,Implemented,ReportLab PDF generation
+FR-CALC-001,Interest Calculation,Simple Interest Calculation,High,Architecture Doc Section 4.3,backend/calculations.py,TC-CALC-001,Implemented,Formula: Principal × (1 + Rate × Years)
+FR-CALC-002,Interest Calculation,Compound Interest Calculation,High,Architecture Doc Section 4.3,backend/calculations.py,TC-CALC-002,Implemented,Formula: Principal × (1 + Rate)^Years
+FR-CALC-003,Interest Calculation,Interest Type Configuration,High,Architecture Doc Section 4.3,backend/database.py | backend/main.py,TC-CALC-003,Implemented,Stored in system_config table
+FR-CLOSE-001,Premature Closure,Simulate Premature Closure,High,Architecture Doc Section 4.4,backend/calculations.py | frontend/src/pages/FDDetails.jsx,TC-CLOSE-001,Implemented,Shows penalty breakdown
+FR-CLOSE-002,Premature Closure,Execute Premature Closure,High,Architecture Doc Section 4.4,backend/main.py | frontend/src/pages/FDDetails.jsx,TC-CLOSE-002,Implemented,Requires confirmation dialog
+FR-CLOSE-003,Premature Closure,Mark FD as Matured,High,Architecture Doc Section 4.4,backend/main.py | frontend/src/pages/FDDetails.jsx,TC-CLOSE-003,Implemented,Only available on/after maturity date
+FR-DASH-001,Dashboard,Display Dashboard Statistics,Medium,Architecture Doc Section 4.5,backend/main.py | frontend/src/pages/Dashboard.jsx,TC-DASH-001,Implemented,Total FDs and active FDs count
+FR-DASH-002,Dashboard,Display Recent FDs,Low,Architecture Doc Section 4.5,backend/main.py | frontend/src/pages/Dashboard.jsx,TC-DASH-002,Implemented,Shows 5 most recent FDs
+FR-CONFIG-001,System Configuration,Configure Interest Type (Simple/Compound),High,Architecture Doc Section 4.6,backend/main.py | frontend/src/pages/SystemConfig.jsx,TC-CONFIG-001,Implemented,Supervisor only access
+FR-CONFIG-002,System Configuration,Configure Penalty Percentage,High,Architecture Doc Section 4.6,backend/main.py | frontend/src/pages/SystemConfig.jsx,TC-CONFIG-002,Implemented,Range: 0-10%
+FR-CONFIG-003,System Configuration,Configure Default Interest Rates,Medium,Architecture Doc Section 4.6,backend/main.py | frontend/src/pages/SystemConfig.jsx,TC-CONFIG-003,Implemented,Rates for 12/24/36 months
+FR-USER-001,User Management,View All Users,Medium,Architecture Doc Section 4.7,backend/main.py | frontend/src/pages/UserManagement.jsx,TC-USER-001,Implemented,Supervisor only access
+FR-USER-002,User Management,Create New User (Officer/Supervisor),High,Architecture Doc Section 4.7,backend/main.py | frontend/src/pages/UserManagement.jsx,TC-USER-002,Implemented,Password hashing implemented
+NFR-PERF-001,Performance,Page Load Time < 2 seconds,High,Architecture Doc Section 5.1,All frontend components,TC-PERF-001,Implemented,Vite optimization
+NFR-PERF-002,Performance,API Response Time < 500ms,High,Architecture Doc Section 5.1,All backend endpoints,TC-PERF-002,Implemented,Average ~100ms
+NFR-SEC-001,Security,Password Hashing (SHA-256),High,Architecture Doc Section 5.2,backend/auth.py,TC-SEC-001,Implemented,Recommend bcrypt for production
+NFR-SEC-002,Security,Session-Based Authentication,High,Architecture Doc Section 5.2,backend/auth.py | backend/database.py,TC-SEC-002,Implemented,Custom X-Session-Token header
+NFR-SEC-003,Security,CORS Configuration,High,Architecture Doc Section 5.2,backend/main.py,TC-SEC-003,Implemented,Whitelist frontend origin
+NFR-SEC-004,Security,SQL Injection Prevention,High,Architecture Doc Section 5.2,backend/database.py | backend/main.py,TC-SEC-004,Implemented,Parameterized queries only
+NFR-UI-001,Usability,Responsive Design (Desktop/Tablet/Mobile),High,Architecture Doc Section 5.3,frontend/src/styles/*.css,TC-UI-001,Implemented,Breakpoints: 768px and 1024px
+NFR-UI-002,Usability,Form Validation with Error Messages,High,Architecture Doc Section 5.3,All form components,TC-UI-002,Implemented,Real-time validation
+NFR-UI-003,Usability,Loading States for Async Operations,Medium,Architecture Doc Section 5.3,All pages with API calls,TC-UI-003,Implemented,Spinner and loading text
+NFR-REL-001,Reliability,Database Transaction Support,High,Architecture Doc Section 5.4,backend/database.py,TC-REL-001,Implemented,Commit/rollback support
+NFR-REL-002,Reliability,Error Handling with User-Friendly Messages,High,Architecture Doc Section 5.4,All components,TC-REL-002,Implemented,Try-catch blocks throughout
+NFR-REL-003,Reliability,Session Persistence Across Page Refreshes,Medium,Architecture Doc Section 5.4,frontend/src/context/AuthContext.jsx,TC-REL-003,Implemented,localStorage token storage
+DB-001,Data Model,Users Table Schema,High,Architecture Doc Section 6.1,backend/database.py,TC-DB-001,Implemented,Includes id/username/password_hash/role
+DB-002,Data Model,FD Accounts Table Schema,High,Architecture Doc Section 6.2,backend/database.py,TC-DB-002,Implemented,Complete FD information storage
+DB-003,Data Model,Sessions Table Schema,High,Architecture Doc Section 6.3,backend/database.py,TC-DB-003,Implemented,Session token management
+DB-004,Data Model,System Config Table Schema,High,Architecture Doc Section 6.4,backend/database.py,TC-DB-004,Implemented,Global settings storage
+API-001,API Endpoints,POST /auth/login - User Login,High,Architecture Doc Section 7.1,backend/main.py,TC-API-001,Implemented,Returns session token
+API-002,API Endpoints,POST /auth/logout - User Logout,High,Architecture Doc Section 7.1,backend/main.py,TC-API-002,Implemented,Invalidates session
+API-003,API Endpoints,GET /auth/me - Get Current User,High,Architecture Doc Section 7.1,backend/main.py,TC-API-003,Implemented,Returns user info
+API-004,API Endpoints,POST /fd - Create FD,High,Architecture Doc Section 7.2,backend/main.py,TC-API-004,Implemented,Validates and creates FD
+API-005,API Endpoints,GET /fd - List All FDs,High,Architecture Doc Section 7.2,backend/main.py,TC-API-005,Implemented,Returns all FD records
+API-006,API Endpoints,GET /fd/{fd_no} - Get FD Details,High,Architecture Doc Section 7.2,backend/main.py,TC-API-006,Implemented,Returns single FD
+API-007,API Endpoints,POST /fd/{fd_no}/simulate-closure - Simulate Closure,High,Architecture Doc Section 7.2,backend/main.py,TC-API-007,Implemented,Returns closure calculations
+API-008,API Endpoints,POST /fd/{fd_no}/close - Execute Closure,High,Architecture Doc Section 7.2,backend/main.py,TC-API-008,Implemented,Updates FD status
+API-009,API Endpoints,POST /fd/{fd_no}/mature - Mark Matured,High,Architecture Doc Section 7.2,backend/main.py,TC-API-009,Implemented,Changes status to Closed
+API-010,API Endpoints,GET /fd/{fd_no}/receipt - Download Receipt,Medium,Architecture Doc Section 7.2,backend/main.py,TC-API-010,Implemented,Returns PDF file
+API-011,API Endpoints,GET /config - Get System Configuration,High,Architecture Doc Section 7.3,backend/main.py,TC-API-011,Implemented,Supervisor only
+API-012,API Endpoints,PUT /config - Update System Configuration,High,Architecture Doc Section 7.3,backend/main.py,TC-API-012,Implemented,Supervisor only
+API-013,API Endpoints,GET /users - List All Users,Medium,Architecture Doc Section 7.4,backend/main.py,TC-API-013,Implemented,Supervisor only
+API-014,API Endpoints,POST /users - Create New User,High,Architecture Doc Section 7.4,backend/main.py,TC-API-014,Implemented,Supervisor only
+UI-001,User Interface,Login Page - No Scrolling Required,High,Architecture Doc Section 8.2,frontend/src/pages/LoginPage.jsx,TC-UI-004,Implemented,Compact design fits on screen
+UI-002,User Interface,Dashboard - Statistics Cards,Medium,Architecture Doc Section 8.2,frontend/src/pages/Dashboard.jsx,TC-UI-005,Implemented,Visual stat cards with icons
+UI-003,User Interface,Create FD - Multi-Section Form with Preview,High,Architecture Doc Section 8.2,frontend/src/pages/CreateFD.jsx,TC-UI-006,Implemented,Live maturity preview
+UI-004,User Interface,FD Register - Filterable Table,High,Architecture Doc Section 8.2,frontend/src/pages/FDRegister.jsx,TC-UI-007,Implemented,Status and date filters
+UI-005,User Interface,FD Details - Two-Column Layout,High,Architecture Doc Section 8.2,frontend/src/pages/FDDetails.jsx,TC-UI-008,Implemented,Details + Actions sidebar
+UI-006,User Interface,System Config - Form-Based Configuration,High,Architecture Doc Section 8.2,frontend/src/pages/SystemConfig.jsx,TC-UI-009,Implemented,Supervisor access only
+UI-007,User Interface,User Management - Table with Create Form,Medium,Architecture Doc Section 8.2,frontend/src/pages/UserManagement.jsx,TC-UI-010,Implemented,Supervisor access only
+UI-008,User Interface,Sidebar Navigation (Collapsible),High,Architecture Doc Section 8.3,frontend/src/pages/Layout.jsx,TC-UI-011,Implemented,Mobile responsive
+UI-009,User Interface,Top Navbar with User Info,Medium,Architecture Doc Section 8.3,frontend/src/pages/Layout.jsx,TC-UI-012,Implemented,Logout button included
+VAL-001,Validation,Customer Name Validation,High,Architecture Doc Section 9.1,frontend/src/pages/CreateFD.jsx,TC-VAL-001,Implemented,Required max 100 chars
+VAL-002,Validation,Deposit Amount Validation,High,Architecture Doc Section 9.1,frontend/src/pages/CreateFD.jsx,TC-VAL-002,Implemented,Required > 0 max 2 decimals
+VAL-003,Validation,Interest Rate Validation,High,Architecture Doc Section 9.1,frontend/src/pages/CreateFD.jsx,TC-VAL-003,Implemented,Required 0-20% max 2 decimals
+VAL-004,Validation,Tenure Validation,High,Architecture Doc Section 9.1,frontend/src/pages/CreateFD.jsx,TC-VAL-004,Implemented,Required > 0 integer
+VAL-005,Validation,Start Date Validation,High,Architecture Doc Section 9.1,frontend/src/pages/CreateFD.jsx,TC-VAL-005,Implemented,Required valid date
+VAL-006,Validation,Closure Date Validation,High,Architecture Doc Section 9.2,frontend/src/pages/FDDetails.jsx,TC-VAL-006,Implemented,After start before maturity
+VAL-007,Validation,Username Validation,High,Architecture Doc Section 9.3,frontend/src/pages/UserManagement.jsx,TC-VAL-007,Implemented,3-50 chars alphanumeric unique
+VAL-008,Validation,Password Validation,High,Architecture Doc Section 9.3,frontend/src/pages/UserManagement.jsx,TC-VAL-008,Implemented,Minimum 6 characters
+CALC-001,Calculations,Maturity Date Calculation,High,FRD Section 4.3,backend/calculations.py,TC-CALC-004,Implemented,Based on tenure and start date
+CALC-002,Calculations,Premature Closure - Days Held,High,FRD Section 4.4,backend/calculations.py,TC-CALC-005,Implemented,Difference between dates
+CALC-003,Calculations,Premature Closure - Accrued Interest,High,FRD Section 4.4,backend/calculations.py,TC-CALC-006,Implemented,Pro-rated interest calculation
+CALC-004,Calculations,Premature Closure - Penalty Amount,High,FRD Section 4.4,backend/calculations.py,TC-CALC-007,Implemented,Percentage of accrued interest
+CALC-005,Calculations,Premature Closure - Net Payout,High,FRD Section 4.4,backend/calculations.py,TC-CALC-008,Implemented,Principal + net interest
+DOC-001,Documentation,Functional Requirements Document,High,N/A,Functional_Requirements_Document.md,N/A,Completed,Comprehensive FRD created
+DOC-002,Documentation,Architecture Document,High,N/A,Architecture_Document.md,N/A,Completed,Technical architecture documented
+DOC-003,Documentation,Architecture Diagram,Medium,N/A,Architecture_Diagram.txt,N/A,Completed,ASCII diagram created
+DOC-004,Documentation,Requirements Traceability Matrix,Medium,N/A,Requirements_Traceability_Matrix.csv,N/A,Completed,This document
